@@ -1,0 +1,21 @@
+{
+  "appId": "com.boss.horrormaze",
+  "appName": "Dreamscape Maze",
+  "webDir": "client/dist",
+  "bundledWebRuntime": false,
+  "android": {
+    "backgroundColor": "#000000",
+    "allowMixedContent": true
+  },
+  "plugins": {
+    "StatusBar": {
+      "style": "Dark",
+      "backgroundColor": "#000000"
+    },
+    "CapacitorUpdater": {
+      "autoUpdate": false,
+      "statsUrl": "",
+      "resetWhenUpdate": false
+    }
+  }
+}

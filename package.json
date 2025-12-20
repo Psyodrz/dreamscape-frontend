@@ -1,0 +1,36 @@
+{
+  "name": "maze",
+  "version": "1.0.1",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "bundle-update": "npm run build && cd dist && tar -cf ../dist.zip * && cd .."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "vite": "^5.4.0",
+    "vite-plugin-static-copy": "^3.1.4"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/app": "^7.1.1",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
+    "@capacitor/dialog": "^7.0.3",
+    "@capacitor/toast": "^7.0.3",
+    "@capgo/capacitor-updater": "^7.39.0",
+    "cannon-es": "^0.20.0",
+    "cannon-es-debugger": "^1.0.0",
+    "lil-gui": "^0.21.0",
+    "socket.io-client": "^4.8.1",
+    "three": "^0.180.0"
+  }
+}
