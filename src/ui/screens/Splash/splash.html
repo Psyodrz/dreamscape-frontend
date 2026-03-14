@@ -1,0 +1,57 @@
+<!-- Legacy Splash Screen Ported to Modular HTML -->
+<div class="startup-splash">
+  <div class="splash-content">
+    <!-- Stage 1: Studio Name -->
+    <div id="splash-stage-1" class="splash-stage hidden">
+      <div id="splash-preloader" class="splash-preloader"></div>
+      <!-- Mini loader for the logo itself -->
+      <img
+        src="assets/AGS.ico"
+        class="splash-agx-logo hidden"
+        alt="AGX Studios"
+      />
+      <h1 class="splash-studio-title">AGX STUDIOS</h1>
+    </div>
+
+    <!-- Stage 2: Presents -->
+    <div id="splash-stage-2" class="splash-stage hidden">
+      <p class="splash-presents-text">PRESENTS</p>
+    </div>
+
+    <!-- Stage 3: Developers -->
+    <div id="splash-stage-3" class="splash-stage hidden">
+      <p class="splash-created-by">CREATED BY</p>
+      <h2 class="splash-dev-names">SANTOSH & ADITYA</h2>
+    </div>
+
+    <!-- Stage 4: Game Title -->
+    <div id="splash-stage-4" class="splash-stage hidden">
+      <!-- Blood drip decoration (reused/adjusted) -->
+      <div class="splash-blood-drips">
+        <div class="blood-drip" style="left: 10%; animation-delay: 0s"></div>
+        <div class="blood-drip" style="left: 25%; animation-delay: 0.5s"></div>
+        <div class="blood-drip" style="left: 50%; animation-delay: 1s"></div>
+        <div class="blood-drip" style="left: 75%; animation-delay: 0.3s"></div>
+        <div class="blood-drip" style="left: 90%; animation-delay: 0.8s"></div>
+      </div>
+
+      <img
+        src="assets/logo.png"
+        class="splash-game-logo-large"
+        alt="Dreamscape Maze"
+      />
+      <p class="splash-tagline">ESCAPE THE NIGHTMARE</p>
+
+      <!-- Loading Bar -->
+      <div class="splash-loading-section">
+        <div class="splash-loading">
+          <div class="splash-loading-bar"></div>
+        </div>
+        <p class="splash-loading-text">INITIALIZING...</p>
+      </div>
+
+      <!-- WebGL Blood Rain Canvas -->
+      <canvas id="blood-rain-canvas" class="splash-bg-canvas hidden"></canvas>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,99 @@
+/**
+ * CSS Variables - Global Design Tokens
+ * 
+ * All theme values defined here for consistency across screens.
+ * Modify these to change the entire app's look.
+ */
+
+:root {
+    /* ========================================
+     COLOR PALETTE - Horror Theme
+     ======================================== */
+
+    /* Primary Blood Reds */
+    --color-blood-dark: #550000;
+    --color-blood: #880000;
+    --color-blood-light: #cc0000;
+    --color-blood-glow: #ff0000;
+
+    /* Backgrounds */
+    --color-bg-darkest: #000000;
+    --color-bg-dark: #050000;
+    --color-bg-medium: #0a0505;
+    --color-bg-overlay: rgba(0, 0, 0, 0.85);
+
+    /* Text */
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #cccccc;
+    --color-text-muted: #888888;
+    --color-text-dim: #555555;
+
+    /* Accents */
+    --color-accent-glow: rgba(180, 0, 0, 0.6);
+    --color-accent-hover: rgba(255, 0, 0, 0.2);
+
+    /* ========================================
+     TYPOGRAPHY
+     ======================================== */
+
+    --font-horror: 'Friday Terror', 'Creepster', cursive;
+    --font-mono: 'Special Elite', 'Courier New', monospace;
+    --font-system: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* Fluid Font Sizes */
+    --font-size-xs: clamp(0.7rem, 1vw, 0.85rem);
+    --font-size-sm: clamp(0.85rem, 1.2vw, 1rem);
+    --font-size-md: clamp(1rem, 1.5vw, 1.2rem);
+    --font-size-lg: clamp(1.2rem, 2vw, 1.5rem);
+    --font-size-xl: clamp(1.5rem, 3vw, 2.5rem);
+    --font-size-2xl: clamp(2rem, 5vw, 4rem);
+    --font-size-3xl: clamp(3rem, 8vw, 6rem);
+
+    /* ========================================
+     SPACING
+     ======================================== */
+
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+
+    /* ========================================
+     LAYOUT
+     ======================================== */
+
+    --max-width-content: 600px;
+    --max-width-narrow: 400px;
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+
+    /* ========================================
+     SHADOWS & EFFECTS
+     ======================================== */
+
+    --shadow-glow-sm: 0 0 10px var(--color-accent-glow);
+    --shadow-glow-md: 0 0 20px var(--color-accent-glow);
+    --shadow-glow-lg: 0 0 40px var(--color-accent-glow);
+    --shadow-text: 2px 2px 4px rgba(0, 0, 0, 0.8);
+
+    /* ========================================
+     TRANSITIONS
+     ======================================== */
+
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* ========================================
+     Z-INDEX LAYERS
+     ======================================== */
+
+    --z-base: 1;
+    --z-overlay: 100;
+    --z-modal: 200;
+    --z-toast: 300;
+    --z-splash: 1000;
+}

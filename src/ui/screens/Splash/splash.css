@@ -1,0 +1,355 @@
+/* ========================================
+   STARTUP SPLASH SCREEN SEQUENCE
+   ======================================== */
+
+.startup-splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    overflow: hidden;
+}
+
+.splash-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.splash-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.splash-stage.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* STAGE 1: AGX STUDIOS */
+.splash-stage-1-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.splash-agx-logo {
+    width: 150px;
+    height: auto;
+    opacity: 0;
+    transform: scale(3);
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+}
+
+.splash-stage.visible .splash-agx-logo {
+    /* Smooth cinematic reveal - Start slightly earlier */
+    animation: cinematicReveal 3s ease-out forwards,
+        breathingScale 5s ease-in-out 2s infinite;
+}
+
+.splash-studio-title {
+    font-family: 'Impact', 'Anton', sans-serif;
+    font-size: 4rem;
+    color: #fff;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    /* Start state matches cinematicReveal 0% */
+    transform: scale(1.1) translateY(20px);
+    opacity: 0;
+    filter: blur(10px);
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.splash-stage.visible .splash-studio-title {
+    /* Match the logo's reveal but slightly delayed so they flow together */
+    animation: textCinematicReveal 3s ease-out 0.5s forwards;
+}
+
+.splash-preloader {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: absolute;
+}
+
+.splash-preloader.hidden {
+    display: none;
+}
+
+/* STAGE 2: PRESENTS */
+.splash-presents-text {
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+    color: #888;
+    opacity: 0;
+    text-transform: uppercase;
+}
+
+.splash-stage.visible .splash-presents-text {
+    animation: smoothFadeIn 2s ease-in-out forwards;
+}
+
+/* STAGE 3: CREATED BY */
+.splash-created-by {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    color: #666;
+    margin-bottom: 20px;
+    opacity: 0;
+}
+
+.splash-dev-names {
+    font-family: 'Courier New', monospace;
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    opacity: 0;
+}
+
+.splash-stage.visible .splash-created-by {
+    animation: smoothFadeIn 1.5s ease-in-out forwards;
+}
+
+.splash-stage.visible .splash-dev-names {
+    animation: smoothFadeIn 1.5s ease-in-out 0.5s forwards;
+}
+
+/* STAGE 4: TITLE & GAME */
+.splash-game-logo-large {
+    width: 90%;
+    max-width: 600px;
+    height: auto;
+    opacity: 0;
+    filter: drop-shadow(0 0 30px rgba(139, 0, 0, 0.5));
+}
+
+.splash-stage.visible .splash-game-logo-large {
+    animation: titleReveal 3s ease-out forwards,
+        breathingScale 6s ease-in-out 3s infinite;
+}
+
+.splash-tagline {
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    letter-spacing: 0.4em;
+    color: #cc3333;
+    margin-top: 20px;
+    opacity: 0;
+    text-transform: uppercase;
+}
+
+.splash-stage.visible .splash-tagline {
+    animation: smoothFadeIn 2s ease-in-out 1s forwards;
+}
+
+/* LOADING PROGRESS */
+.splash-loading-section {
+    position: absolute;
+    bottom: 50px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+}
+
+.splash-stage.visible .splash-loading-section {
+    animation: smoothFadeIn 1s ease-in-out 2s forwards;
+}
+
+.splash-loading {
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.splash-loading-bar {
+    width: 0%;
+    height: 100%;
+    background: #cc3333;
+    box-shadow: 0 0 10px #cc3333;
+    transition: width 0.3s ease-out;
+}
+
+.splash-loading-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: #666;
+    text-transform: uppercase;
+}
+
+/* BACKGROUND CANVAS (Blood Rain) */
+.splash-bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* BLOOD DRIPS DECORATION */
+.splash-blood-drips {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.blood-drip {
+    position: absolute;
+    top: -100px;
+    width: 2px;
+    background: linear-gradient(to bottom,
+            rgba(139, 0, 0, 0),
+            rgba(139, 0, 0, 0.8));
+    animation: dripFall 4s linear infinite;
+}
+
+/* ANIMATIONS */
+@keyframes cinematicReveal {
+    0% {
+        opacity: 0;
+        transform: scale(3) translateY(-20px);
+        filter: blur(20px) contrast(200%);
+    }
+
+    20% {
+        opacity: 0.8;
+        filter: blur(5px) contrast(150%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0) contrast(100%);
+    }
+}
+
+@keyframes textCinematicReveal {
+    0% {
+        opacity: 0;
+        transform: scale(1.1) translateY(20px);
+        filter: blur(10px);
+        letter-spacing: 1rem;
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+        letter-spacing: 0.2rem;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes smoothFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes titleReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+        filter: blur(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes breathingScale {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
+}
+
+@keyframes dripFall {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+        height: 0;
+    }
+
+    20% {
+        opacity: 1;
+        height: 50px;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(120vh);
+        opacity: 0;
+        height: 50px;
+    }
+}
+
+/* UTILITIES */
+.hidden {
+    display: none !important;
+}

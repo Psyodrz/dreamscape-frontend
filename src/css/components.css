@@ -1,0 +1,157 @@
+/**
+ * Components CSS - Shared UI Component Styles
+ * 
+ * Reusable styles for buttons, inputs, panels, etc.
+ * Used across multiple screens.
+ */
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+
+    padding: var(--space-md) var(--space-lg);
+    min-height: 48px;
+    /* Touch-friendly */
+
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+
+    color: var(--color-text-muted);
+    background: rgba(10, 0, 0, 0.6);
+    border: 1px solid var(--color-blood-dark);
+    border-radius: var(--border-radius-sm);
+
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    /* Angled corners effect */
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px),
+            calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+.btn:hover,
+.btn:focus {
+    color: var(--color-blood-glow);
+    background: rgba(40, 0, 0, 0.8);
+    border-color: var(--color-blood-glow);
+    box-shadow: var(--shadow-glow-sm);
+    transform: scale(1.02);
+    outline: none;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    color: var(--color-text-secondary);
+    background: linear-gradient(135deg, var(--color-blood-dark), var(--color-blood));
+    border-color: var(--color-blood);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--color-blood), var(--color-blood-light));
+    box-shadow: var(--shadow-glow-md);
+}
+
+.btn-icon {
+    font-size: 1.1em;
+    opacity: 0.8;
+}
+
+/* ========================================
+   PROGRESS BAR
+   ======================================== */
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar__fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-blood), var(--color-blood-light));
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+/* ========================================
+   LOGO
+   ======================================== */
+
+.game-logo {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+    filter: drop-shadow(var(--shadow-glow-md));
+}
+
+/* ========================================
+   TAGLINE / SUBTITLE
+   ======================================== */
+
+.tagline {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-align: center;
+    text-shadow: var(--shadow-text);
+}
+
+/* ========================================
+   HINT TEXT
+   ======================================== */
+
+.hint-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-dim);
+    letter-spacing: 0.1em;
+}
+
+.hint-text__icon {
+    font-size: 1.2em;
+}
+
+/* ========================================
+   PANEL / CARD
+   ======================================== */
+
+.panel {
+    background: var(--color-bg-overlay);
+    border: 1px solid var(--color-blood-dark);
+    border-radius: var(--border-radius-md);
+    padding: var(--space-xl);
+    box-shadow: var(--shadow-glow-sm);
+}
+
+.panel__title {
+    font-family: var(--font-horror);
+    font-size: var(--font-size-xl);
+    color: var(--color-blood-light);
+    text-align: center;
+    margin-bottom: var(--space-lg);
+    text-shadow: var(--shadow-glow-sm);
+}

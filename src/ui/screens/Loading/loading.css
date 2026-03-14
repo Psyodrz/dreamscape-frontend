@@ -1,0 +1,75 @@
+/**
+ * Loading Screen Styles (Legacy Port)
+ * Scoped using [data-screen="loading"]
+ */
+
+[data-screen="loading"] .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+[data-screen="loading"] .loading-content {
+    text-align: center;
+    width: 300px;
+}
+
+[data-screen="loading"] .loading-logo {
+    width: 150px;
+    margin-bottom: 30px;
+    filter: drop-shadow(0 0 10px rgba(200, 0, 0, 0.5));
+}
+
+[data-screen="loading"] .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(50, 0, 0, 0.5);
+    border-radius: 50%;
+    border-top-color: #f00;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+[data-screen="loading"] .loading-text {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+[data-screen="loading"] .loading-progress-container {
+    width: 100%;
+    height: 4px;
+    background: #200;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+[data-screen="loading"] .loading-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #f00;
+    transition: width 0.2s ease;
+    box-shadow: 0 0 5px #f00;
+}
+
+[data-screen="loading"] .loading-percent {
+    color: #f00;
+    font-size: 0.8rem;
+    font-family: monospace;
+}

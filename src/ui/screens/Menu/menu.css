@@ -1,0 +1,145 @@
+/**
+ * Menu Screen Styles (Legacy Port)
+ * Scoped using [data-screen="menu"]
+ */
+
+/* ========================================
+   MENU SCREEN (Legacy Absolute Positioning)
+   ======================================== */
+
+[data-screen="menu"] .menu-container {
+    text-align: center;
+    padding: 40px;
+    max-width: 400px;
+    width: 90%;
+    /* Responsive width */
+    position: absolute;
+    bottom: 80px;
+    /* Cinematic bottom positioning default */
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s ease;
+
+    /* Ensure it sits on top */
+    z-index: 100;
+}
+
+/* Tablet & Mobile Adjustments */
+@media (max-width: 768px) {
+    [data-screen="menu"] .menu-container {
+        bottom: 50%;
+        transform: translate(-50%, 50%);
+        padding: 20px;
+        max-width: 320px;
+    }
+}
+
+[data-screen="menu"] .game-logo {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 20px rgba(180, 0, 0, 0.6));
+    animation: logoFloat 4s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+[data-screen="menu"] .tagline {
+    font-size: 1rem;
+    color: #666;
+    font-family: 'Special Elite', 'Courier New', monospace;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+[data-screen="menu"] .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+[data-screen="menu"] .btn {
+    background: rgba(10, 0, 0, 0.8);
+    border: 1px solid #330000;
+    color: #ccc;
+    font-family: 'Special Elite', monospace;
+    font-size: 1.1rem;
+    padding: 15px 25px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    /* Angled corners */
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+[data-screen="menu"] .btn:hover {
+    background: rgba(50, 0, 0, 0.9);
+    border-color: #f00;
+    color: #fff;
+    transform: scale(1.05);
+    /* Slight grow */
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+}
+
+[data-screen="menu"] .btn:active {
+    transform: scale(0.98);
+}
+
+[data-screen="menu"] .btn-primary {
+    border-color: #600;
+    background: rgba(30, 0, 0, 0.85);
+    font-weight: bold;
+    color: #ddd;
+}
+
+[data-screen="menu"] .btn-secondary {
+    border-color: #333;
+    font-size: 0.9rem;
+    padding: 12px 20px;
+    color: #888;
+}
+
+[data-screen="menu"] .btn-icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+/* ========================================
+   HEADPHONE HINT
+   ======================================== */
+[data-screen="menu"] .headphone-hint {
+    margin-top: 40px;
+    color: #555;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0.7;
+}
+
+[data-screen="menu"] .hint-icon {
+    font-size: 1.2rem;
+}

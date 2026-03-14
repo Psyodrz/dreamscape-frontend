@@ -33,4 +33,4 @@ npm run build
 
 ## Author
 
-Aditya Srivastava
+Santosh & Aditya Srivastava

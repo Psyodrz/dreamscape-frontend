@@ -1,0 +1,429 @@
+/* ========================================
+   STARTUP SPLASH SCREEN SEQUENCE
+   ======================================== */
+
+.startup-splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    overflow: hidden;
+}
+
+.splash-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.splash-stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.splash-stage.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* STAGE 1: AGX STUDIOS */
+.splash-stage-1-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.splash-agx-logo {
+    width: 150px;
+    height: auto;
+    opacity: 0;
+    transform: scale(3);
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+}
+
+.splash-stage.visible .splash-agx-logo {
+    /* Smooth cinematic reveal - Start slightly earlier */
+    animation: cinematicReveal 3s ease-out forwards,
+        breathingScale 5s ease-in-out 2s infinite;
+}
+
+.splash-studio-title {
+    font-family: 'Impact', 'Anton', sans-serif;
+    font-size: 4rem;
+    color: #fff;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    /* Start state matches cinematicReveal 0% */
+    transform: scale(1.1) translateY(20px);
+    opacity: 0;
+    filter: blur(10px);
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.splash-stage.visible .splash-studio-title {
+    /* Match the logo's reveal but slightly delayed so they flow together */
+    animation: textCinematicReveal 3s ease-out 0.5s forwards;
+}
+
+.splash-preloader {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: absolute;
+}
+
+.splash-preloader.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes cinematicReveal {
+    0% {
+        transform: scale(1.1) translateY(20px);
+        opacity: 0;
+        filter: blur(15px);
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+        filter: blur(0px);
+    }
+}
+
+@keyframes textCinematicReveal {
+    0% {
+        transform: scale(1.1) translateY(20px);
+        opacity: 0;
+        filter: blur(15px);
+        letter-spacing: 0.5rem;
+        /* Start wide */
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+        filter: blur(0px);
+        letter-spacing: 0.2rem;
+        /* Settle normal */
+    }
+}
+
+@keyframes slamIn {
+    0% {
+        transform: scale(5);
+        /* Start closer */
+        opacity: 0;
+        filter: blur(10px);
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        filter: blur(0px);
+    }
+}
+
+@keyframes breathingScale {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes cameraShake {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(-5px, 5px) scale(1.02);
+    }
+
+    50% {
+        transform: translate(5px, -5px) scale(1);
+    }
+
+    75% {
+        transform: translate(-3px, 3px) scale(1.01);
+    }
+}
+
+/* STAGE 2: PRESENTS */
+.splash-presents-text {
+    font-family: 'Special Elite', monospace;
+    font-size: 1.5rem;
+    letter-spacing: 0.8em;
+    color: #888;
+    opacity: 0;
+}
+
+.splash-stage.visible .splash-presents-text {
+    animation: slowFadeIn 3s ease-out forwards;
+}
+
+@keyframes slowFadeIn {
+    from {
+        opacity: 0;
+        letter-spacing: 0.2em;
+    }
+
+    to {
+        opacity: 1;
+        letter-spacing: 0.8em;
+    }
+}
+
+/* STAGE 3: CREATORS */
+.splash-created-by {
+    font-family: 'Special Elite', monospace;
+    font-size: 1rem;
+    color: #666;
+    letter-spacing: 0.3em;
+    margin-bottom: 20px;
+}
+
+.splash-dev-names {
+    font-family: 'Friday Terror', cursive;
+    font-size: 3.5rem;
+    color: #bb0000;
+    text-shadow: 0 0 15px rgba(200, 0, 0, 0.5);
+    position: relative;
+}
+
+.splash-stage.visible .splash-dev-names {
+    animation: textGlitch 3s infinite alternate-reverse;
+}
+
+@keyframes textGlitch {
+    0% {
+        transform: skew(0deg);
+        opacity: 1;
+    }
+
+    5% {
+        transform: skew(10deg);
+        text-shadow: -2px 0 #00ffff, 2px 0 #ff0000;
+        opacity: 0.8;
+    }
+
+    10% {
+        transform: skew(0deg);
+        opacity: 1;
+    }
+
+    60% {
+        transform: skew(0deg);
+        opacity: 1;
+    }
+
+    65% {
+        transform: skew(-10deg);
+        text-shadow: 2px 0 #00ffff, -2px 0 #ff0000;
+        opacity: 0.9;
+    }
+
+    70% {
+        transform: skew(0deg);
+        opacity: 1;
+    }
+}
+
+/* STAGE 4: MAIN TITLE */
+.splash-game-logo-large {
+    max-width: 80%;
+    width: 300px;
+    animation: floatLogo 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px rgba(150, 0, 0, 0.6));
+}
+
+/* Reusing blood drips from previous styles */
+.splash-blood-drips {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    z-index: 0;
+}
+
+.blood-drip {
+    position: absolute;
+    top: -100px;
+    width: 2px;
+    height: 100px;
+    background: red;
+    box-shadow: 0 0 5px red;
+    animation: dripDown 3s infinite;
+}
+
+@keyframes dripDown {
+    0% {
+        top: -100px;
+        opacity: 1;
+    }
+
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
+
+@keyframes floatLogo {
+
+    0%,
+    100% {
+        transform: translateY(0px) scale(1);
+    }
+
+    50% {
+        transform: translateY(-10px) scale(1.02);
+    }
+}
+
+/* Loading section styling */
+.splash-loading-section {
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.splash-loading {
+    width: 200px;
+    height: 4px;
+    background: rgba(50, 0, 0, 0.5);
+    margin-bottom: 10px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.splash-loading-bar {
+    width: 0%;
+    height: 100%;
+    background: #ff0000;
+    box-shadow: 0 0 10px #ff0000;
+    transition: width 0.2s;
+}
+
+.splash-loading-text {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.8rem;
+    color: #888;
+    letter-spacing: 0.1em;
+    animation: flickerText 2s infinite;
+}
+
+@keyframes flickerText {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    52% {
+        opacity: 0.2;
+    }
+
+    54% {
+        opacity: 0.8;
+    }
+}
+
+/* Landscape adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+    .splash-studio-title {
+        font-size: 3rem;
+    }
+
+    .splash-dev-names {
+        font-size: 2.5rem;
+    }
+
+    .splash-game-logo-large {
+        width: 180px;
+    }
+}
+
+.splash-tagline {
+    font-family: 'Friday Terror', cursive;
+    color: #aa0000;
+    font-size: 1.5rem;
+    margin-top: 10px;
+    letter-spacing: 0.1em;
+    animation: subtlePulse 2s infinite;
+}
+
+/* Fade out entire splash */
+.startup-splash.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+    pointer-events: none;
+}
+
+/* WebGL Background Canvas */
+.splash-bg-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Behind text/logo */
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.splash-bg-canvas.visible {
+    opacity: 1;
+}
+
+.splash-bg-canvas.hidden {
+    display: none;
+}

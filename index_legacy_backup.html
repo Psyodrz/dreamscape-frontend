@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <!-- PWA Core -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Immersive 3D Multiplayer Horror Maze" />
+    
+    <!-- iOS Safari Specific -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Dreamscape" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    
+    <title>Dreamscape Maze</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="assets/AGS.png" type="image/x-icon" />
+    
+    <!-- iOS Icons (Multiple Sizes) -->
+    <link rel="apple-touch-icon" href="assets/AGS.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/AGS.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/AGS.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="assets/AGS.png" />
+    
+    <!-- iOS Splash Screens (Landscape) -->
+    <link rel="apple-touch-startup-image" href="assets/splash.png" 
+          media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" />
+    <link rel="apple-touch-startup-image" href="assets/splash.png" 
+          media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" />
+    <link rel="apple-touch-startup-image" href="assets/splash.png" 
+          media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" />
+    <link rel="apple-touch-startup-image" href="assets/splash.png" 
+          media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" />
+    
+    <!-- Horror Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nosifer&family=Special+Elite&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="splash.css" />
+    
+    <!-- iOS Safari Specific Styles -->
+    <style>
+      /* Prevent iOS overscroll/bounce */
+      html, body {
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: touch;
+        touch-action: manipulation;
+      }
+      
+      /* iOS Safe Area Support */
+      body {
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      }
+      
+      /* Prevent text selection and callouts on iOS */
+      * {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      
+      /* Ensure canvas fills safe areas */
+      canvas.webgl {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        touch-action: none;
+      }
+      
+      /* iOS standalone mode detection */
+      @media all and (display-mode: standalone) {
+        body {
+          padding-top: env(safe-area-inset-top);
+        }
+      }
+    </style>
+    <!-- PeerJS for multiplayer -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('SW Registered'))
+            .catch(err => console.log('SW Failed', err));
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <canvas class="webgl"></canvas>
+    </div>
+
+    <!-- STARTUP SPLASH SCREEN (shown on app launch) -->
+    <div id="startup-splash" class="startup-splash">
+      <div class="splash-content">
+        <!-- Stage 1: Studio Name -->
+        <div id="splash-stage-1" class="splash-stage hidden">
+            <div id="splash-preloader" class="splash-preloader"></div> <!-- Mini loader for the logo itself -->
+            <img src="assets/AGS.ico" class="splash-agx-logo hidden" alt="AGX Studios" />
+            <h1 class="splash-studio-title">AGX STUDIOS</h1>
+        </div>
+
+        <!-- Stage 2: Presents -->
+        <div id="splash-stage-2" class="splash-stage hidden">
+            <p class="splash-presents-text">PRESENTS</p>
+        </div>
+
+        <!-- Stage 3: Developers -->
+        <div id="splash-stage-3" class="splash-stage hidden">
+            <p class="splash-created-by">CREATED BY</p>
+            <h2 class="splash-dev-names">SANTOSH & ADITYA</h2>
+        </div>
+
+        <!-- Stage 4: Game Title -->
+        <div id="splash-stage-4" class="splash-stage hidden">
+             <!-- Blood drip decoration (reused/adjusted) -->
+            <div class="splash-blood-drips">
+              <div class="blood-drip" style="left: 10%; animation-delay: 0s;"></div>
+              <div class="blood-drip" style="left: 25%; animation-delay: 0.5s;"></div>
+              <div class="blood-drip" style="left: 50%; animation-delay: 1s;"></div>
+              <div class="blood-drip" style="left: 75%; animation-delay: 0.3s;"></div>
+              <div class="blood-drip" style="left: 90%; animation-delay: 0.8s;"></div>
+            </div>
+            
+            <img src="assets/logo.png" class="splash-game-logo-large" alt="Dreamscape Maze" />
+            <p class="splash-tagline">ESCAPE THE NIGHTMARE</p>
+            
+            <!-- Loading Bar -->
+            <div class="splash-loading-section">
+              <div class="splash-loading">
+                <div class="splash-loading-bar"></div>
+              </div>
+              <p class="splash-loading-text">INITIALIZING...</p>
+            </div>
+            
+            <!-- WebGL Blood Rain Canvas -->
+            <canvas id="blood-rain-canvas" class="splash-bg-canvas hidden"></canvas>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- PORTRAIT MODE WARNING DISABLED -->
+
+    <!-- MENU OVERLAY -->
+    <div id="menu-overlay" class="overlay">
+      <div class="menu-container">
+        <img src="assets/logo.png" class="game-logo" alt="DREAMSCAPE MAZE" />
+        <p class="tagline">Escape the darkness...</p>
+
+        <div class="menu-buttons">
+          <button id="btn-play" class="btn btn-primary">
+            <span class="btn-icon">▶</span>
+            SOLO PLAY
+          </button>
+          <button id="btn-multiplayer" class="btn btn-primary">
+            <span class="btn-icon">◈</span>
+            MULTIPLAYER
+          </button>
+          <button id="btn-settings" class="btn btn-secondary">
+            <span class="btn-icon">⚙</span>
+            SETTINGS
+          </button>
+          <button id="btn-controls" class="btn btn-secondary">
+            <span class="btn-icon">?</span>
+            CONTROLS
+          </button>
+        </div>
+        
+        <p class="headphone-hint">
+            <span class="hint-icon">🎧</span> Headphones Recommended
+        </p>
+      </div>
+    </div>
+
+    <!-- CHARACTER SELECTION -->
+    <div id="character-select" class="panel hidden">
+      <div class="panel-content">
+        <h2 class="panel-title">CREATE CHARACTER</h2>
+
+        <div class="setting-group">
+          <label class="setting-label">Your Name</label>
+          <input
+            type="text"
+            id="player-name-input"
+            class="room-code-input"
+            placeholder="Enter your name"
+            maxlength="20"
+            autocomplete="off"
+            style="text-transform: none; letter-spacing: 0.05em"
+          />
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">Choose Character</label>
+          <div class="toggle-group" id="gender-select">
+            <button class="toggle-btn active" data-gender="male">
+              <span class="gender-icon">♂</span><br />MALE
+            </button>
+            <button class="toggle-btn" data-gender="female">
+              <span class="gender-icon">♀</span><br />FEMALE
+            </button>
+          </div>
+        </div>
+
+        <button
+          id="btn-start-game"
+          class="btn btn-primary"
+          style="margin-top: 20px"
+        >
+          <span class="btn-icon">▶</span>
+          START GAME
+        </button>
+        <button id="btn-char-back" class="btn btn-back">← BACK</button>
+      </div>
+    </div>
+
+    <!-- MULTIPLAYER LOBBY -->
+    <div id="multiplayer-overlay" class="hidden">
+      <div class="lobby-container">
+        <h2 class="lobby-title" id="lobby-title">MULTIPLAYER</h2>
+
+        <!-- Mode Selection -->
+        <div id="mode-select" class="menu-buttons">
+          <button id="btn-host" class="btn btn-primary">
+            <span class="btn-icon">⌂</span>
+            CREATE ROOM
+          </button>
+          <button id="btn-join" class="btn btn-secondary">
+            <span class="btn-icon">⛓</span>
+            JOIN ROOM
+          </button>
+          <button id="btn-mp-back" class="btn btn-back">← BACK</button>
+        </div>
+
+        <!-- Character Selection (shown before create/join) -->
+        <div id="mp-char-select" class="hidden">
+          <div class="setting-group">
+            <label class="setting-label">Your Name</label>
+            <input
+              type="text"
+              id="mp-player-name"
+              class="room-code-input"
+              placeholder="Enter your name"
+              maxlength="20"
+              autocomplete="off"
+              style="text-transform: none; letter-spacing: 0.05em"
+            />
+          </div>
+
+          <div class="setting-group">
+            <label class="setting-label">Choose Character</label>
+            <div class="toggle-group" id="mp-gender-select">
+              <button class="toggle-btn active" data-gender="male">
+                <span class="gender-icon">♂</span><br />MALE
+              </button>
+              <button class="toggle-btn" data-gender="female">
+                <span class="gender-icon">♀</span><br />FEMALE
+              </button>
+            </div>
+          </div>
+
+          <button
+            id="btn-char-confirm"
+            class="btn btn-primary"
+            style="margin-top: 20px"
+          >
+            <span class="btn-icon">✓</span>
+            CONTINUE
+          </button>
+          <button id="btn-char-back" class="btn btn-back">← BACK</button>
+        </div>
+
+        <!-- Join Room Input -->
+        <div id="join-input" class="hidden">
+          <input
+            type="text"
+            id="room-code-input"
+            class="room-code-input"
+            placeholder="ENTER CODE"
+            maxlength="6"
+            autocomplete="off"
+          />
+          <button id="btn-join-confirm" class="btn btn-primary">JOIN</button>
+          <button id="btn-join-back" class="btn btn-back">← BACK</button>
+        </div>
+
+        <!-- Room Lobby -->
+        <div id="room-lobby" class="hidden">
+          <p style="color: #888; margin-bottom: 10px">ROOM CODE</p>
+          <div class="room-code-display" id="room-code-display">------</div>
+          <div class="player-list" id="player-list">
+            <!-- Players will be added here -->
+          </div>
+          <!-- Host sees START GAME (visible by default) -->
+          <button id="btn-mp-start-game" class="btn btn-primary">
+            START GAME
+          </button>
+          <!-- Guests see READY toggle (hidden by default) -->
+          <button
+            id="btn-ready"
+            class="btn btn-secondary"
+            style="display: none"
+          >
+            ✓ READY
+          </button>
+          <p
+            id="waiting-text"
+            style="color: #888; margin: 15px 0; display: none"
+          >
+            Waiting for host to start...
+          </p>
+          <button id="btn-leave-room" class="btn btn-back">← LEAVE</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PANEL -->
+    <div id="settings-panel" class="panel hidden">
+      <div class="panel-content">
+        <h2 class="panel-title">SETTINGS</h2>
+
+        <div class="setting-group">
+          <label class="setting-label">Graphics Quality</label>
+          <div class="toggle-group">
+            <button class="toggle-btn" data-quality="low">LOW</button>
+            <button class="toggle-btn active" data-quality="medium">
+              MEDIUM
+            </button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label class="setting-label">Sound Volume</label>
+          <input
+            type="range"
+            id="volume-slider"
+            class="slider"
+            min="0"
+            max="100"
+            value="70"
+          />
+          <span id="volume-value" class="slider-value">70%</span>
+        </div>
+
+
+            <div class="setting-row">
+                <span class="setting-label">Vibration</span>
+                <div class="toggle-switch active" id="vibration-toggle" data-enabled="true">
+                    <div class="toggle-knob"></div>
+                    <span class="toggle-label">ON</span>
+                </div>
+            </div>
+
+            <!-- OTA Update Section -->
+            <div class="setting-row" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                <div style="display: flex; flex-direction: column; width: 100%; gap: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="setting-label">App Version</span>
+                        <span id="app-version" style="color: rgba(255,255,255,0.6); font-family: 'Courier New', monospace;">v1.0.0</span>
+                    </div>
+                    <button id="btn-check-update" class="menu-btn small" style="width: 100%; font-size: 0.9rem; padding: 10px;">Check for Updates</button>
+                </div>
+            </div>
+
+            <button id="btn-settings-back" class="menu-btn back-btn">BACK</button>
+      </div>
+    </div>
+
+    <!-- CONTROLS PANEL -->
+    <div id="controls-panel" class="panel hidden">
+      <div class="panel-content">
+        <h2 class="panel-title">CONTROLS</h2>
+
+        <div class="control-item">
+          <div class="control-icon">◎</div>
+          <div class="control-desc">
+            <strong>Left Joystick</strong>
+            <p>Move your character</p>
+          </div>
+        </div>
+
+        <div class="control-item">
+          <div class="control-icon">↔</div>
+          <div class="control-desc">
+            <strong>Right Swipe</strong>
+            <p>Look around</p>
+          </div>
+        </div>
+
+        <div class="control-item">
+          <div class="control-icon">⚡</div>
+          <div class="control-desc">
+            <strong>Sprint Button</strong>
+            <p>Run faster (limited stamina)</p>
+          </div>
+        </div>
+
+
+
+        <button id="btn-controls-back" class="btn btn-back">← BACK</button>
+      </div>
+    </div>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen" class="overlay hidden">
+      <div class="loading-content">
+        <img src="assets/logo.png" class="loading-logo" alt="Dreamscape Maze" />
+        <div class="loading-spinner"></div>
+        <p class="loading-text" id="loading-text">Loading assets...</p>
+        <div class="loading-progress-container">
+          <div class="loading-progress-bar" id="loading-progress-bar"></div>
+        </div>
+        <p class="loading-percent" id="loading-percent">0%</p>
+      </div>
+    </div>
+
+    <!-- TOUCH CONTROLS (Mobile Only) -->
+    <div id="touch-controls" class="hidden">
+      <!-- Left Side: Virtual Joystick -->
+      <div id="joystick-area">
+        <div id="joystick-base">
+          <div id="joystick-thumb"></div>
+        </div>
+      </div>
+
+      <!-- Right Side: Camera Look Area -->
+      <div id="look-area"></div>
+
+      <!-- Action Buttons -->
+      <div id="action-buttons">
+        <button id="btn-sprint" class="action-btn" aria-label="Sprint">
+          <span class="action-icon">⚡</span>
+          <span class="action-label">RUN</span>
+        </button>
+        <button id="btn-jump" class="action-btn" aria-label="Jump">
+          <span class="action-icon">↑</span>
+          <span class="action-label">JUMP</span>
+        </button>
+        <button id="btn-flashlight" class="action-btn" aria-label="Flashlight">
+          <span class="action-icon">◐</span>
+          <span class="action-label">LIGHT</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- IN-GAME PAUSE MENU -->
+    <div id="pause-menu" class="overlay hidden">
+      <div class="pause-container">
+        <h2 class="pause-title">PAUSED</h2>
+
+        <div class="pause-section">
+          <h3 class="section-title">♫ Audio</h3>
+
+          <div class="pause-setting">
+            <label>Music Volume</label>
+            <div class="slider-row">
+              <input
+                type="range"
+                id="pause-music-volume"
+                class="slider"
+                min="0"
+                max="100"
+                value="50"
+              />
+              <span id="pause-music-value" class="slider-value">50%</span>
+            </div>
+          </div>
+
+          <div class="pause-setting">
+            <label>SFX Volume</label>
+            <div class="slider-row">
+              <input
+                type="range"
+                id="pause-sfx-volume"
+                class="slider"
+                min="0"
+                max="100"
+                value="80"
+              />
+              <span id="pause-sfx-value" class="slider-value">80%</span>
+            </div>
+          </div>
+
+          <div class="pause-setting">
+            <label>Music</label>
+            <button
+              id="pause-music-toggle"
+              class="toggle-switch active"
+              data-enabled="true"
+            >
+              <span class="toggle-label">ON</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="pause-section">
+          <h3 class="section-title">⚙ Graphics</h3>
+
+          <div class="pause-setting">
+            <label>Quality</label>
+            <div class="toggle-group">
+              <button class="toggle-btn" data-pause-quality="low">LOW</button>
+              <button class="toggle-btn active" data-pause-quality="medium">
+                MEDIUM
+              </button>
+              <button class="toggle-btn" data-pause-quality="high">HIGH</button>
+            </div>
+          </div>
+
+          <div class="pause-setting">
+            <label>Shadows</label>
+            <button
+              id="pause-shadows-toggle"
+              class="toggle-switch active"
+              data-enabled="true"
+            >
+              <span class="toggle-label">ON</span>
+            </button>
+          </div>
+
+          <div class="pause-setting">
+            <label>Fog Density</label>
+            <div class="slider-row">
+              <input
+                type="range"
+                id="pause-fog-slider"
+                class="slider"
+                min="0"
+                max="100"
+                value="50"
+              />
+              <span id="pause-fog-value" class="slider-value">50%</span>
+            </div>
+          </div>
+
+          <div class="pause-setting">
+            <label>Look Sensitivity</label>
+            <div class="slider-row">
+              <input
+                type="range"
+                id="pause-sensitivity-slider"
+                class="slider"
+                min="10"
+                max="200"
+                value="100"
+              />
+              <span id="pause-sensitivity-value" class="slider-value">100%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pause-buttons">
+          <button id="btn-resume" class="btn btn-primary">
+            <span class="btn-icon">▶</span> RESUME
+          </button>
+          <button id="btn-quit-game" class="btn btn-secondary">
+            <span class="btn-icon">⌂</span> QUIT TO MENU
+          </button>
+          
+          <button id="btn-reset-campaign" class="btn btn-secondary" style="margin-top: 10px; border-color: #ff4444; color: #ff4444;">
+             <span class="btn-icon">↺</span> RESET CAMPAIGN
+          </button>
+        </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME OVER SCREEN -->
+    <div id="game-over-screen" class="overlay hidden">
+      <div class="game-over-content">
+        <h1 class="game-over-title">YOU DIED</h1>
+        <p class="game-over-text">The darkness has consumed you.</p>
+        <div class="game-over-buttons">
+          <button id="btn-restart" class="btn btn-primary">TRY AGAIN</button>
+          <button id="btn-game-over-quit" class="btn btn-secondary">QUIT TO MENU</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAUSE BUTTON (in-game) -->
+    <button id="pause-button" class="pause-btn hidden" aria-label="Pause">
+      ⏸
+    </button>
+
+    <!-- VOICE CONTROLS (in-game) -->
+
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
